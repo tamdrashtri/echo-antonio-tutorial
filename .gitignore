@@ -29,3 +29,5 @@ yarn-error.log*
 
 # turbo cache directory
 .turbo
+
+.env.sentry-build-plugin
