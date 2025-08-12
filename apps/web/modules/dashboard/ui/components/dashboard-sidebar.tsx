@@ -29,6 +29,7 @@ import {
     useSidebar,
 } from "@workspace/ui/components/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
+import { cn } from "@workspace/ui/lib/utils";
 
 
 
@@ -117,9 +118,10 @@ export const DashboardSidebar = () => {
                                     <SidebarMenuButton
                                         isActive={isActive(item.url)}
                                         asChild
-                                 
+                                        className={cn(
+                                            isActive(item.url) && "bg-gradient-to-b from-sidebar-primary to-[#0b63f3]! text-sidebar-primary-foreground! hover:to-[#0b63f3]/90!"
+                                        )}
                                         tooltip={item.label}
-                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                         >
                                         
                                         <Link href={item.url}>
@@ -145,7 +147,9 @@ export const DashboardSidebar = () => {
                                         asChild
                                
                                         tooltip={item.title}
-                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                        className={cn(
+                                            isActive(item.url) && "bg-gradient-to-b from-sidebar-primary to-[#0b63f3]! text-sidebar-primary-foreground! hover:to-[#0b63f3]/90!"
+                                        )}
                                         >
 
                                         <Link href={item.url}>
@@ -170,7 +174,9 @@ export const DashboardSidebar = () => {
                                         isActive={isActive(item.url)}
                                         asChild
                                         tooltip={item.title}
-                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                        className={cn(
+                                            isActive(item.url) && "bg-gradient-to-b from-sidebar-primary to-[#0b63f3]! text-sidebar-primary-foreground! hover:to-[#0b63f3]/90!"
+                                        )}
                                         >
 
                                         <Link href={item.url}>
