@@ -1,9 +1,10 @@
-import { defineSchema, defineTable } from "convex/server";
 import {v} from "convex/values";
-import { platform } from "os";
+import {query, mutation} from "../_generated/server";
 
-export default defineSchema({
-    contactSessions: defineTable({
+const SESSION_DURATION = 1000 * 60 * 60 * 24; // 1 days
+
+export const create = mutation({
+    args: {
         name: v.string(),
         email: v.string(),
         organizationId: v.number(),
@@ -21,11 +22,13 @@ export default defineSchema({
             cookieEnabled: v.optional(v.string()),
             referrer: v.optional(v.string()),
             currentUrl: v.optional(v.string()),
-        })),
-    })
-        .index("by_organization_id", ["organizationId"])
-        .index("by_expires_at", ["expiredAt"]),
-    users: defineTable({
-        name: v.string(),
-    }),
-});
+        })
+    ),
+},
+    handler: async (ctx, args) => {
+        const now = new Date();
+        const expiredAt = now.getTime() + SESSION_DURATION;
+        const contactSessionid = await ctx.db.insert("contactSessions", {...args, expiredAt});
+        return contactSessionid;
+    }
+})
