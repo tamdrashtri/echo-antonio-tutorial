@@ -1,20 +1,26 @@
 "use client";
-import { Form, FormControl, FormField, FormItem, FormMessage, } from "@workspace/ui/components/form";
-// import { WidgetFooter } from "@/modules/widget/ui/components/widget-footer";
-// import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
-import { WidgetAuthScreen } from "../screens/widget-auth-screen";
-import {Button} from "@workspace/ui/components/button";
-import {useForm} from "react-hook-form";
-import { Input } from "@workspace/ui/components/input";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
 
+import { WidgetAuthScreen } from "../screens/widget-auth-screen";
+import { useAtomValue } from "jotai";
+import { screenAtom } from "../../atoms/widget-atoms";
+import { error } from "console";
 
 interface Props {
     organizationId: string; 
 };
 
 export const WidgetView = ({organizationId}: Props) => {
+    const screen = useAtomValue(screenAtom);
+    const screenComponents = {
+        auth: <WidgetAuthScreen />,
+        error: <p>Error</p>,
+        loading: <p>Loading</p>,
+        selection: <p>Selection</p>,
+        voice: <p>Voice</p>,
+        inbox: <p>Inbox</p>,
+        chat: <p>Chat</p>,
+        contact: <p>Contact</p>,
+    };
     return (
         <main className="flex h-full w-full flex-col overflow-hidden rounded-xl border bg-muted">
             <WidgetAuthScreen />
