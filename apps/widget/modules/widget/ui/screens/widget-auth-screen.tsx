@@ -8,6 +8,8 @@ import { Button } from "@workspace/ui/components/button";
 import { useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 import { Doc } from "@workspace/backend/_generated/dataModel";
+import { useAtomValue, useSetAtom } from "jotai";
+import { organizationIdAtom, contactSessionIdAtomFamily, screenAtom } from "../../atoms/widget-atoms";
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -19,6 +21,11 @@ const formSchema = z.object({
 })
 
 export const WidgetAuthScreen = () => {
+    const organizationId = useAtomValue(organizationIdAtom);
+    const setContactSessionId = useSetAtom(
+        contactSessionIdAtomFamily(organizationId || "default")
+    );
+    const setScreen = useSetAtom(screenAtom);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -26,7 +33,7 @@ export const WidgetAuthScreen = () => {
             email: "",
         },
     })
-    const organizationId = 1;
+    
     const createContactSession = useMutation(api.public.contactSessions.create);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -49,11 +56,12 @@ export const WidgetAuthScreen = () => {
         }
         const contactSessionId = await createContactSession({
             ...values,
-            organizationId,
+            organizationId: parseInt(organizationId), // Convert string to number
             metadata,
             expiredAt: Date.now() + (1000 * 60 * 60 * 24), // 1 day from now
         });
-        console.log({contactSessionId});
+        setContactSessionId(contactSessionId);
+        setScreen("selection"); // Navigate to selection screen after successful auth
     }
     
     return (
