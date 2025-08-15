@@ -18,3 +18,4 @@ export const contactSessionIdAtom = contactSessionIdAtomFamily("default");
 
 // Organization ID atom for the current widget instance
 export const organizationIdAtom = atom<string | null>(null);
+export const conversationIdAtom = atom<Id<"conversations"> | null>(null);
